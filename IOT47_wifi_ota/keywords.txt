@@ -1,0 +1,2 @@
+iot47_wifi_ota_begin	KEYWORD1
+iot47_wifi_ota_loop	KEYWORD1
