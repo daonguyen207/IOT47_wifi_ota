@@ -15,4 +15,4 @@ iot47_wifi_ota_begin(&server);
 ```
 iot47_wifi_ota_loop();
 ```
-Để vào trang upload firmware các bạn vào trình duyệt gõ 192.168.1.6/upload ( chú ý 192.168.1.6 là ip tùy chỉnh )
+Để vào trang upload firmware các bạn vào trình duyệt gõ 192.168.1.6/update ( chú ý 192.168.1.6 là ip tùy chỉnh )
