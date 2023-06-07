@@ -118,9 +118,7 @@ const char uploadPage[] PROGMEM = R"=====(
             };
             
             xhr.open('POST', '/upload', true);
-            var formData = new FormData();
-            formData.append('file', file);
-            xhr.send(formData);
+            xhr.send(file);
             isUploading = true;
         }
         
