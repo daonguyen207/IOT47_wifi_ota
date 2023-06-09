@@ -1,6 +1,7 @@
 # IOT47_wifi_ota
 Thư viện upload firmware ota cho esp32/esp8266 espidf qua webserver
-Phiên bản cho arduino ở đây: https://github.com/daonguyen207/espidf_webserver_ota
+Phiên bản cho espidf ở đây: https://github.com/daonguyen207/espidf_webserver_ota
+Xem hướng dẫn chỉ tiết: http://iot47.com/cap-nhat-firmware-tu-xa-cho-esp8266-esp32-ota-qua-web-server/
 # Sử dụng
 Thư viện này yêu cầu bạn cài ESPAsyncWebServer.h
 # Add thư viện
