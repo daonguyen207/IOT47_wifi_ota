@@ -116,7 +116,7 @@ const char uploadPage[] PROGMEM = R"=====(
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                         if (xhr.status === 200) {
-                            percent.innerHTML = 'Tệp tin đã được tải lên thành công!';
+                            percent.innerHTML = 'Tệp tin đã được tải lên thành công, vui lòng không rút điện tới khi thiết bị hoạt động trở lại';
                         } else if (xhr.status === 401) {
                             percent.innerHTML = 'File firmware không chính hãng';
                         }
