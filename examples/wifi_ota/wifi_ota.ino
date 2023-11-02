@@ -1,9 +1,14 @@
-#include <WiFi.h>
-#include <AsyncTCP.h>
-#include <ESPAsyncWebServer.h>
 #include "iot47_wifi_ota.h"
 
-// Replace with your network credentials
+#if defined(ESP8266)
+#include <ESP8266WiFi.h>
+#include <ESPAsyncTCP.h>
+#else
+#include <WiFi.h>
+#include <AsyncTCP.h>
+#endif
+#include <ESPAsyncWebServer.h>
+
 const char* ssid = "qstech";
 const char* password = "0123456789";
 
@@ -22,6 +27,7 @@ void setup()
   // Print ESP Local IP Address
   Serial.println(WiFi.localIP());
 
+  iot47_ota_set_debug(false);
   iot47_wifi_ota_begin(&server);
   server.begin();
 }
