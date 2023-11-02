@@ -33,7 +33,7 @@ int UpdateRun()
         if(show_debug)Serial.println("OTA not fiished");
     }
 }
-void handleUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final)
+static void handleUploadOTA(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final)
 {
   if(!index)
   {
@@ -90,7 +90,7 @@ void handleUpload(AsyncWebServerRequest *request, String filename, size_t index,
 }
 void iot47_wifi_ota_begin(AsyncWebServer *s)
 {
-  s->on("/upload", HTTP_POST, [](AsyncWebServerRequest *request) {request->send(200);},handleUpload);
+  s->on("/upload", HTTP_POST, [](AsyncWebServerRequest *request) {request->send(200);},handleUploadOTA);
   s->on("/update", HTTP_GET, [](AsyncWebServerRequest *request) {request->send_P(200, "text/html", uploadPage);});
 }
 void iot47_wifi_ota_loop()
