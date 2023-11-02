@@ -89,22 +89,16 @@ const char uploadPage[] PROGMEM = R"=====(
     </script>
     <script>
         var isUploading = false;
+        var md5Hash;
+        var fileContent;
         function uploadFile() {
           if (isUploading) {
                 return;
             }
-            var fileInput = document.getElementById('file');
             var progressBar = document.getElementById('progress');
             var percent = document.getElementById('percent');
             var fileName = document.getElementById('file-name');
-            var file = fileInput.files[0];
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const fileContent = event.target.result;
-                const md5Hash = SparkMD5.ArrayBuffer.hash(fileContent); // Tính toán hàm băm MD5
-                console.log(md5Hash);
-
-                var xhr = new XMLHttpRequest();
+            var xhr = new XMLHttpRequest();
                 xhr.upload.onprogress = function(event) {
                     if (event.lengthComputable) {
                         var progress = Math.round((event.loaded / event.total) * 100);
@@ -116,7 +110,7 @@ const char uploadPage[] PROGMEM = R"=====(
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                         if (xhr.status === 200) {
-                            percent.innerHTML = 'Tệp tin đã được tải lên thành công, vui lòng không rút điện tới khi thiết bị hoạt động trở lại';
+                            percent.innerHTML = 'Thành công, không rút điện tới khi thiết bị hoạt động trở lại';
                         } else if (xhr.status === 401) {
                             percent.innerHTML = 'File firmware không chính hãng';
                         }
@@ -133,14 +127,28 @@ const char uploadPage[] PROGMEM = R"=====(
                 xhr.setRequestHeader("Size", file.size);
                 xhr.send(formData);
                 isUploading = true;
-              };
-            reader.readAsArrayBuffer(file);
         }
         
         function displayFileName() {
             var fileInput = document.getElementById('file');
             var fileName = document.getElementById('file-name');
             fileName.innerHTML = fileInput.files[0].name;
+
+            //đọc file
+            var file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                fileContent = event.target.result;
+                var enc = new TextDecoder("utf-8");
+                if(enc.decode(fileContent).indexOf("iot47_update_lib_as342gv_20711") == -1)
+                {
+                    percent.innerHTML = 'Cảnh báo ! Chúng tôi phát hiện vấn đề với firmware này, hãy cẩn thận khi cập nhật';
+                }
+                else percent.innerHTML = 'Firmware hợp lệ ! Có thể tải lên !';
+                md5Hash = SparkMD5.ArrayBuffer.hash(fileContent); // Tính toán hàm băm MD5
+                console.log(md5Hash);
+            }
+            reader.readAsArrayBuffer(file);
         }
     </script>
 </head>
