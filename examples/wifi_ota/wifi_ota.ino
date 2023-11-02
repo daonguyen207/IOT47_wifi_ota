@@ -27,7 +27,7 @@ void setup()
   // Print ESP Local IP Address
   Serial.println(WiFi.localIP());
 
-  iot47_ota_set_debug(false);
+  //iot47_ota_set_debug(false);
   iot47_wifi_ota_begin(&server);
   server.begin();
 }
