@@ -41,6 +41,9 @@ void handleUpload(AsyncWebServerRequest *request, String filename, size_t index,
     {
       AsyncWebHeader* h = request->getHeader("Size");
       totol_size = h->value().toInt();
+      #if defined(ESP8266)
+      Update.runAsync(true);
+      #endif
       Update.begin(totol_size);
       if(show_debug)Serial.println("UploadStart: " + String(totol_size));
     }
