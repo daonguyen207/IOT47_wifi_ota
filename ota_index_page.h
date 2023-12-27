@@ -91,6 +91,7 @@ const char uploadPage[] PROGMEM = R"=====(
         var isUploading = false;
         var md5Hash;
         var fileContent;
+        var file;
         function uploadFile() {
           if (isUploading) {
                 return;
@@ -103,7 +104,7 @@ const char uploadPage[] PROGMEM = R"=====(
                     if (event.lengthComputable) {
                         var progress = Math.round((event.loaded / event.total) * 100);
                         progressBar.style.width = progress + '%';
-                        percent.innerHTML = progress + '%';
+                        percent.innerHTML = "Chờ 1 chút - " + progress + '%';
                     }
                 };
                 
@@ -120,7 +121,7 @@ const char uploadPage[] PROGMEM = R"=====(
                         isUploading = false;
                     }
                 };
-                xhr.open('POST', '/upload', true);
+                xhr.open('POST', '/uploadfw', true);
                 var formData = new FormData();
                 formData.append('file', file);
                 xhr.setRequestHeader("Hash", md5Hash);
@@ -135,14 +136,14 @@ const char uploadPage[] PROGMEM = R"=====(
             fileName.innerHTML = fileInput.files[0].name;
 
             //đọc file
-            var file = fileInput.files[0];
+            file = fileInput.files[0];
             const reader = new FileReader();
             reader.onload = function(event) {
                 fileContent = event.target.result;
                 var enc = new TextDecoder("utf-8");
                 if(enc.decode(fileContent).indexOf("iot47_update_lib_as342gv_20711") == -1)
                 {
-                    percent.innerHTML = 'Cảnh báo ! Chúng tôi phát hiện vấn đề với firmware này, hãy cẩn thận khi cập nhật';
+                    percent.innerHTML = 'Cảnh báo ! Hệ thống phát hiện vấn đề với firmware này, hãy cẩn thận khi cập nhật';
                 }
                 else percent.innerHTML = 'Firmware hợp lệ ! Có thể tải lên !';
                 md5Hash = SparkMD5.ArrayBuffer.hash(fileContent); // Tính toán hàm băm MD5
