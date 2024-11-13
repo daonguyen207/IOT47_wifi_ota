@@ -11,7 +11,27 @@
 
 static char flag = 0;
 static uint32_t totol_size;
+static uint32_t curren_download;
 static char show_debug=true;
+
+typedef void (*wifiota_callback_t)(uint32_t curen, uint32_t totol);
+wifiota_callback_t wbegin_callback;
+wifiota_callback_t wproces_callback;
+wifiota_callback_t wend_callback;
+
+void iot47_wifi_ota_set_begin_callback(wifiota_callback_t c)
+{
+  wbegin_callback = c;
+}
+void iot47_wifi_ota_set_proces_callback(wifiota_callback_t c)
+{
+  wproces_callback = c;
+}
+void iot47_wifi_ota_set_end_callback(wifiota_callback_t c)
+{
+  wend_callback = c;
+}
+
 
 void iot47_ota_set_debug(bool mode)
 {
@@ -46,6 +66,8 @@ static void handleUploadOTA(AsyncWebServerRequest *request, String filename, siz
       #endif
       Update.begin(totol_size);
       if(show_debug)Serial.println("UploadStart: " + String(totol_size));
+      curren_download=0;
+      if(wbegin_callback)wbegin_callback(curren_download,totol_size);
     }
     else
     {
@@ -54,6 +76,8 @@ static void handleUploadOTA(AsyncWebServerRequest *request, String filename, siz
     }
   }
   Update.write(data,len);
+  curren_download+=len;
+  if(wproces_callback)wproces_callback(curren_download,totol_size);
   if(final)
   {
     if(totol_size == (index+len))
@@ -66,6 +90,7 @@ static void handleUploadOTA(AsyncWebServerRequest *request, String filename, siz
         if (Update.end(true))
         {
           if(show_debug)Serial.printf("\r\nUploadEnd: %s, %u B\n", filename.c_str(), totol_size);
+          if(wend_callback)wend_callback(curren_download,totol_size);
           flag = 1;
         }
         else
