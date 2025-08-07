@@ -59,7 +59,7 @@ static void handleUploadOTA(AsyncWebServerRequest *request, String filename, siz
   {
     if(request->hasHeader("Size"))
     {
-      AsyncWebHeader* h = request->getHeader("Size");
+      const AsyncWebHeader* h = request->getHeader("Size");
       totol_size = h->value().toInt();
       #if defined(ESP8266)
       Update.runAsync(true);
@@ -84,7 +84,7 @@ static void handleUploadOTA(AsyncWebServerRequest *request, String filename, siz
     {
       if(request->hasHeader("Hash"))
       {
-        AsyncWebHeader* h = request->getHeader("Hash");
+        const AsyncWebHeader* h = request->getHeader("Hash");
         Update.setMD5((const char *)h->value().c_str());
         if(show_debug)Serial.printf("Hash: %s\n", h->value().c_str());
         if (Update.end(true))
@@ -129,3 +129,4 @@ void iot47_wifi_ota_loop()
 }
 
 #endif
+
